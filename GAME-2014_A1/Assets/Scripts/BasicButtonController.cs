@@ -1,3 +1,16 @@
+/*
+///-----------------------------------------------------------------
+///   Source file name:     BasicButtonController.cs
+///   Author's name:        Kyle Hunter (Trung Le)
+///   Student number:       101264698
+///   Date created:         2021-10-03
+///   Date last modified:   2021-10-03 (See GitHub)
+///   Program description:  Load scene commands for basic UI button objects
+///   Revision History:     
+///   20211013 - initial submit
+///-----------------------------------------------------------------
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
