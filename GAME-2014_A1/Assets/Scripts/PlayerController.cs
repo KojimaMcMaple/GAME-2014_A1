@@ -100,6 +100,20 @@ public class PlayerController : MonoBehaviour
 
     public void OnFireBullet()
     {
-        bullet_manager_.GetBullet(bullet_spawn_pos_.position);
+        if (transform.localScale.x > 0)
+        {
+            bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.BulletType.PLAYER, GlobalEnums.BulletDir.RIGHT);
+        }
+        else
+        {
+            bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.BulletType.PLAYER, GlobalEnums.BulletDir.LEFT);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.Find("BulletSpawnPosition").position, 0.1f);
     }
 }
