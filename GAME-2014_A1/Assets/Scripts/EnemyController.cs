@@ -9,7 +9,9 @@ public class EnemyController : MonoBehaviour
     [Header("Bullets")]
     private Transform bullet_spawn_pos_;
     //public GameObject bulletPrefab;
-    public int frameDelay;
+    [SerializeField] private float speed_ = 0.75f;
+    [SerializeField] private float firerate_ = 1.0f;
+    private float shoot_countdown_ = 0.0f;
 
     private Vector3 startingPoint;
     [SerializeField] private float vertical_range_;
@@ -20,17 +22,16 @@ public class EnemyController : MonoBehaviour
         startingPoint = transform.position;
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition");
         bullet_manager_ = GameObject.FindObjectOfType<BulletManager>();
+        shoot_countdown_ = firerate_;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time, vertical_range_) + startingPoint.y);
-    }
+        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + startingPoint.y);
 
-    void FixedUpdate()
-    {
-        if (Time.frameCount % frameDelay == 0)
+        shoot_countdown_ -= Time.deltaTime;
+        if (shoot_countdown_ <= 0)
         {
             if (transform.localScale.x > 0)
             {
@@ -40,6 +41,7 @@ public class EnemyController : MonoBehaviour
             {
                 bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.BulletType.ENEMY, GlobalEnums.BulletDir.LEFT);
             }
+            shoot_countdown_ = firerate_;
         }
     }
 
