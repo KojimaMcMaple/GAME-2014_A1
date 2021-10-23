@@ -14,54 +14,99 @@ using UnityEngine;
 public class FoodManager : MonoBehaviour
 {
     private Queue<GameObject> pool_;
-    [SerializeField] private int pool_num_;
+    private Queue<GameObject> low_pool_;
+    private Queue<GameObject> high_pool_;
+    private Queue<GameObject> beyond_pool_;
+    private int pool_num_ = 0;
+    private int low_pool_num_ = 0;
+    private int high_pool_num_ = 0;
+    private int beyond_pool_num_ = 0;
 
     private FoodFactory factory_;
 
     private void Awake()
     {
         pool_ = new Queue<GameObject>();
+        low_pool_ = new Queue<GameObject>();
+        high_pool_ = new Queue<GameObject>();
+        beyond_pool_ = new Queue<GameObject>();
         factory_ = GetComponent<FoodFactory>();
-        BuildPool(); //pre-build a certain num of objects to improve performance
-    }
-
-    /// <summary>
-    /// Builds a pool of objects in pool_num_ amount
-    /// </summary>
-    private void BuildPool()
-    {
-        for (int i = 0; i < pool_num_; i++)
-        {
-            AddObj();
-        }
     }
 
     /// <summary>
     /// Uses the factory to spawn one object, add it to the queue, and increase the pool size 
     /// </summary>
-    private void AddObj()
+    private void AddObj(GlobalEnums.FoodType type = GlobalEnums.FoodType.DEFAULT)
     {
-        //var temp = Instantiate(bullet_obj, this.transform);
-        var temp = factory_.CreateObj();
-        pool_.Enqueue(temp);
-        pool_num_++;
+        var temp = factory_.CreateObj(type);
+        switch (type)
+        {
+            case GlobalEnums.FoodType.DEFAULT:
+                pool_.Enqueue(temp);
+                pool_num_++;
+                break;
+            case GlobalEnums.FoodType.LOW:
+                low_pool_.Enqueue(temp);
+                low_pool_num_++;
+                break;
+            case GlobalEnums.FoodType.HIGH:
+                high_pool_.Enqueue(temp);
+                high_pool_num_++;
+                break;
+            case GlobalEnums.FoodType.BEYOND:
+                beyond_pool_.Enqueue(temp);
+                beyond_pool_num_++;
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>
     /// Removes an object from the pool and returns a reference to it
     /// </summary>
     /// <param name="position"></param>
+    /// <param name="type"></param>
     /// <returns></returns>
-    public GameObject GetObj(Vector2 position)
+    public GameObject GetObj(Vector2 position, GlobalEnums.FoodType type = GlobalEnums.FoodType.DEFAULT)
     {
         GameObject temp = null;
-        if (pool_.Count < 1) //add one obj if pool empty
+        switch (type)
         {
-            AddObj();
+            case GlobalEnums.FoodType.DEFAULT:
+                if (pool_.Count < 1) //add one obj if pool empty
+                {
+                    AddObj(type);
+                }
+                temp = pool_.Dequeue();
+                break;
+            case GlobalEnums.FoodType.LOW:
+                if (low_pool_.Count < 1) //add one obj if pool empty
+                {
+                    AddObj(type);
+                }
+                temp = low_pool_.Dequeue();
+                break;
+            case GlobalEnums.FoodType.HIGH:
+                if (high_pool_.Count < 1) //add one obj if pool empty
+                {
+                    AddObj(type);
+                }
+                temp = high_pool_.Dequeue();
+                break;
+            case GlobalEnums.FoodType.BEYOND:
+                if (beyond_pool_.Count < 1) //add one obj if pool empty
+                {
+                    AddObj(type);
+                }
+                temp = beyond_pool_.Dequeue();
+                break;
+            default:
+                break;
         }
-        temp = pool_.Dequeue();
         temp.transform.position = position;
         temp.GetComponent<FoodController>().SetSpawnPos(position);
+        temp.GetComponent<SpriteRenderer>().sprite = factory_.GetRandSprite(type);
         temp.SetActive(true);
         return temp;
     }
@@ -70,9 +115,26 @@ public class FoodManager : MonoBehaviour
     /// Returns an object back into the pool
     /// </summary>
     /// <param name="returned_obj"></param>
-    public void ReturnObj(GameObject returned_obj)
+    public void ReturnObj(GameObject returned_obj, GlobalEnums.FoodType type = GlobalEnums.FoodType.DEFAULT)
     {
         returned_obj.SetActive(false);
-        pool_.Enqueue(returned_obj);
+
+        switch (type)
+        {
+            case GlobalEnums.FoodType.DEFAULT:
+                pool_.Enqueue(returned_obj);
+                break;
+            case GlobalEnums.FoodType.LOW:
+                low_pool_.Enqueue(returned_obj);
+                break;
+            case GlobalEnums.FoodType.HIGH:
+                high_pool_.Enqueue(returned_obj);
+                break;
+            case GlobalEnums.FoodType.BEYOND:
+                beyond_pool_.Enqueue(returned_obj);
+                break;
+            default:
+                break;
+        }
     }
 }

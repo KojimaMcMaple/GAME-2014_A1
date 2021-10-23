@@ -21,6 +21,16 @@ public static class GlobalEnums
     {
         DEFAULT,
         PLAYER,
-        ENEMY
+        ENEMY,
+        TYPE_COUNT
+    };
+
+    public enum FoodType
+    {
+        DEFAULT,
+        LOW,
+        HIGH,
+        BEYOND,
+        TYPE_COUNT
     };
 }

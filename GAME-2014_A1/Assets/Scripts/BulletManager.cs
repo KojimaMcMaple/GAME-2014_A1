@@ -36,11 +36,32 @@ public class BulletManager : MonoBehaviour
     {
         for (int i = 0; i < player_bullet_num; i++)
         {
-            AddBullet(GlobalEnums.ObjType.PLAYER);
+            PreAddBullet(GlobalEnums.ObjType.PLAYER);
         }
         for (int i = 0; i < enemy_bullet_num; i++)
         {
-            AddBullet(GlobalEnums.ObjType.ENEMY);
+            PreAddBullet(GlobalEnums.ObjType.ENEMY);
+        }
+    }
+
+    /// <summary>
+    /// Based on AddBullet() without num++, otherwise would cause infinite loop
+    /// </summary>
+    private void PreAddBullet(GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER)
+    {
+        //var temp = Instantiate(bullet_obj, this.transform);
+        var temp = factory_.CreateBullet(type);
+
+        switch (type)
+        {
+            case GlobalEnums.ObjType.PLAYER:
+                player_bullet_pool.Enqueue(temp);
+                break;
+            case GlobalEnums.ObjType.ENEMY:
+                enemy_bullet_pool.Enqueue(temp);
+                break;
+            default:
+                break;
         }
     }
 

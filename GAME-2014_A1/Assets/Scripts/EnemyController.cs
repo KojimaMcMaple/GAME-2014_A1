@@ -12,13 +12,14 @@ using UnityEngine;
 /// </summary>
 public class EnemyController : MonoBehaviour, IDamageable<int>
 {
+    [Header("Stats")]
     [SerializeField] private int hp_ = 100;
     [SerializeField] private int score_ = 50;
-    [Header("Enemy Movement")]
-    private Vector3 startingPoint;
-    [SerializeField] private float vertical_range_;
-    private BulletManager bullet_manager_;
 
+    [Header("Movement")]
+    private Vector3 startingPoint;
+    [SerializeField] private float vertical_range_ = 0.47f;
+    
     [Header("Bullets")]
     private Transform bullet_spawn_pos_;
     //public GameObject bulletPrefab;
@@ -26,13 +27,20 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     [SerializeField] private float firerate_ = 0.47f;
     private float shoot_countdown_ = 0.0f;
 
+    private Transform fov_;
+    private bool is_facing_left_ = true;
+
+    private BulletManager bullet_manager_;
+    private FoodManager food_manager_;
     private GameManager game_manager_;
 
     void Awake()
     {
         startingPoint = transform.position;
+        is_facing_left_ = transform.localScale.x < 0 ? true : false;
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition");
         bullet_manager_ = GameObject.FindObjectOfType<BulletManager>();
+        food_manager_ = GameObject.FindObjectOfType<FoodManager>();
         shoot_countdown_ = firerate_;
 
         game_manager_ = FindObjectOfType<GameManager>();
@@ -40,7 +48,6 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         Init(); //IDamageable method
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + startingPoint.y);
@@ -60,6 +67,18 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        IDamageable<int> other_interface = collision.gameObject.GetComponent<IDamageable<int>>();
+        if (other_interface != null)
+        {
+            if (other_interface.obj_type == GlobalEnums.ObjType.PLAYER)
+            {
+
+            }
+        }
+    }
+
     /// <summary>
     /// IDamageable methods
     /// </summary>
@@ -75,6 +94,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         health -= damage_value;
         if (health <= 0)
         {
+            food_manager_.GetObj(this.transform.position, (GlobalEnums.FoodType)Random.Range(0, (int)GlobalEnums.FoodType.TYPE_COUNT));
             game_manager_.IncrementScore(score_);
             this.gameObject.SetActive(false);
         }

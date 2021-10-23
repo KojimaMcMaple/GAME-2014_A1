@@ -12,26 +12,34 @@ using UnityEngine;
 /// </summary>
 public class FoodController : MonoBehaviour
 {
+    [SerializeField] private GlobalEnums.FoodType type_ = GlobalEnums.FoodType.DEFAULT;
     [SerializeField] private int heal_value_ = 20;
+    [SerializeField] private float speed_ = 0.75f;
     private Vector3 spawn_pos_;
+    [SerializeField] private float vertical_range_ = 0.47f;
     private FoodManager manager_;
 
     private void Awake()
     {
+        spawn_pos_ = transform.position;
         manager_ = GameObject.FindObjectOfType<FoodManager>();
+    }
+
+    private void Update()
+    {
+        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + spawn_pos_.y);
     }
 
     /// <summary>
     /// Mutator for private variable
     /// </summary>
-    /// <param name="value"></param>
     public void SetSpawnPos(Vector3 value)
     {
         spawn_pos_ = value;
     }
 
     /// <summary>
-    /// When bullet collides with something, move bullet back to pool
+    /// When object collides with something, move it back to pool
     /// </summary>
     public void OnTriggerEnter2D(Collider2D other)
     {
@@ -41,8 +49,8 @@ public class FoodController : MonoBehaviour
             if (other_interface.obj_type == GlobalEnums.ObjType.PLAYER)
             {
                 other_interface.HealDamage(heal_value_);
+                manager_.ReturnObj(this.gameObject, type_);
             }
         }
-        manager_.ReturnObj(this.gameObject);
     }
 }
