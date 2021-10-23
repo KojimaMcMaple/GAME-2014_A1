@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  The Source file name: CameraController.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Global game manager script
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     private GameObject main_player_;

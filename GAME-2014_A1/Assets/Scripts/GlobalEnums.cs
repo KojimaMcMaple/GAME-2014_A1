@@ -1,5 +1,11 @@
-
-
+/// <summary>
+///  The Source file name: GlobalEnums.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Global game manager script
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 public static class GlobalEnums
 {
     public enum BulletDir
@@ -11,7 +17,7 @@ public static class GlobalEnums
         DOWN
     };
 
-    public enum BulletType
+    public enum ObjType
     {
         DEFAULT,
         PLAYER,

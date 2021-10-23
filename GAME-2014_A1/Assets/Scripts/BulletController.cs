@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  The Source file name: BulletController.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Responsible for moving the individual bullets
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 public class BulletController : MonoBehaviour
 {
-    public GlobalEnums.BulletType type;
-
+    [SerializeField] private GlobalEnums.ObjType type_ = GlobalEnums.ObjType.ENEMY;
     [SerializeField] private float speed_;
     [SerializeField] private float travel_distance_ = 10f;
+    [SerializeField] private int damage_ = 10;
     private Vector3 spawn_pos_;
     private GlobalEnums.BulletDir dir_ = GlobalEnums.BulletDir.DEFAULT;
     private BulletManager bullet_manager_;
@@ -23,6 +31,9 @@ public class BulletController : MonoBehaviour
         CheckBounds();
     }
 
+    /// <summary>
+    /// Moves the bullet from left to right
+    /// </summary>
     private void Move()
     {
         switch (dir_)
@@ -36,14 +47,16 @@ public class BulletController : MonoBehaviour
             default:
                 break;
         }
-        
     }
 
+    /// <summary>
+    /// When bullet is fully off-screen, move bullet back to pool
+    /// </summary>
     private void CheckBounds()
     {
         if (transform.position.x > spawn_pos_.x + travel_distance_ || transform.position.x < spawn_pos_.x - travel_distance_)
         {
-            bullet_manager_.ReturnBullet(this.gameObject, type);
+            bullet_manager_.ReturnBullet(this.gameObject, type_);
         }
     }
 
@@ -55,5 +68,22 @@ public class BulletController : MonoBehaviour
     public void SetDir(GlobalEnums.BulletDir value)
     {
         dir_ = value;
+    }
+
+    /// <summary>
+    /// When bullet collides with something, move bullet back to pool
+    /// </summary>
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        IDamageable<int> other_interface = other.gameObject.GetComponent<IDamageable<int>>();
+        if (other_interface != null)
+        {
+            if (other_interface.obj_type != type_)
+            {
+                other_interface.ApplyDamage(damage_);
+                Debug.Log(">>> " + damage_);
+            }
+        }
+        bullet_manager_.ReturnBullet(this.gameObject, type_);
     }
 }

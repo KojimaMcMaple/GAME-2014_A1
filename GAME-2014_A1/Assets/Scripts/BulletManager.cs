@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  The Source file name: BulletManager.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Global game manager script
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 [System.Serializable]
 public class BulletManager : MonoBehaviour
 {
@@ -21,32 +29,34 @@ public class BulletManager : MonoBehaviour
         BuildBulletPool(); //pre-build a certain num of bullets to improve performance
     }
 
-    // Builds a pool of bullets in bullet_num amount
+    /// <summary>
+    /// Builds a pool of bullets in bullet_num amount
+    /// </summary>
     private void BuildBulletPool()
     {
         for (int i = 0; i < player_bullet_num; i++)
         {
-            AddBullet(GlobalEnums.BulletType.PLAYER);
+            AddBullet(GlobalEnums.ObjType.PLAYER);
         }
         for (int i = 0; i < enemy_bullet_num; i++)
         {
-            AddBullet(GlobalEnums.BulletType.ENEMY);
+            AddBullet(GlobalEnums.ObjType.ENEMY);
         }
     }
 
-    private void AddBullet(GlobalEnums.BulletType type = GlobalEnums.BulletType.PLAYER)
+    private void AddBullet(GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER)
     {
         //var temp = Instantiate(bullet_obj, this.transform);
         var temp = factory_.CreateBullet(type);
 
         switch (type)
         {
-            case GlobalEnums.BulletType.PLAYER:
+            case GlobalEnums.ObjType.PLAYER:
                 //temp.SetActive(false);
                 player_bullet_pool.Enqueue(temp);
                 player_bullet_num++;
                 break;
-            case GlobalEnums.BulletType.ENEMY:
+            case GlobalEnums.ObjType.ENEMY:
                 //temp.SetActive(false);
                 enemy_bullet_pool.Enqueue(temp);
                 enemy_bullet_num++;
@@ -56,25 +66,31 @@ public class BulletManager : MonoBehaviour
         }
     }
 
-    // Removes a bullet from the pool and return a ref to it
+    /// <summary>
+    /// // Removes a bullet from the pool and return a ref to it
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="type"></param>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     public GameObject GetBullet(Vector2 position, 
-                                GlobalEnums.BulletType type = GlobalEnums.BulletType.PLAYER,
+                                GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER,
                                 GlobalEnums.BulletDir dir = GlobalEnums.BulletDir.RIGHT)
     {
         GameObject temp = null;
         switch (type)
         {
-            case GlobalEnums.BulletType.PLAYER:
+            case GlobalEnums.ObjType.PLAYER:
                 if (player_bullet_pool.Count < 1) //add one bullet if pool empty
                 {
-                    AddBullet(GlobalEnums.BulletType.PLAYER);
+                    AddBullet(GlobalEnums.ObjType.PLAYER);
                 }
                 temp = player_bullet_pool.Dequeue();
                 break;
-            case GlobalEnums.BulletType.ENEMY:
+            case GlobalEnums.ObjType.ENEMY:
                 if (enemy_bullet_pool.Count < 1) //add one bullet if pool empty
                 {
-                    AddBullet(GlobalEnums.BulletType.ENEMY);
+                    AddBullet(GlobalEnums.ObjType.ENEMY);
                 }
                 temp = enemy_bullet_pool.Dequeue();
                 break;
@@ -88,17 +104,21 @@ public class BulletManager : MonoBehaviour
         return temp;
     }
 
-    // Returns a bullet back into the pool
-    public void ReturnBullet(GameObject returned_bullet, GlobalEnums.BulletType type = GlobalEnums.BulletType.PLAYER)
+    /// <summary>
+    /// Returns a bullet back into the pool
+    /// </summary>
+    /// <param name="returned_bullet"></param>
+    /// <param name="type"></param>
+    public void ReturnBullet(GameObject returned_bullet, GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER)
     {
         returned_bullet.SetActive(false);
 
         switch (type)
         {
-            case GlobalEnums.BulletType.PLAYER:
+            case GlobalEnums.ObjType.PLAYER:
                 player_bullet_pool.Enqueue(returned_bullet);
                 break;
-            case GlobalEnums.BulletType.ENEMY:
+            case GlobalEnums.ObjType.ENEMY:
                 enemy_bullet_pool.Enqueue(returned_bullet);
                 break;
             default:

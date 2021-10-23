@@ -1,21 +1,16 @@
-/*
-///-----------------------------------------------------------------
-///   Source file name:     BasicButtonController.cs
-///   Author's name:        Kyle Hunter (Trung Le)
-///   Student number:       101264698
-///   Date created:         2021-10-03
-///   Date last modified:   2021-10-03 (See GitHub)
-///   Program description:  Load scene commands for basic UI button objects
-///   Revision History:     
-///   20211013 - initial submit
-///-----------------------------------------------------------------
-*/
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+///  The Source file name: BasicButtonController.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Global game manager script
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 public class BasicButtonController : MonoBehaviour
 {
     public void DoLoadMainMenu()
