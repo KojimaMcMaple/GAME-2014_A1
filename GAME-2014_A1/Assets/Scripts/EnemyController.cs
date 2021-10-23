@@ -70,7 +70,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     }
     public int health { get; set; } //Health points
     public GlobalEnums.ObjType obj_type { get; set; } //Type of gameobject
-    public void ApplyDamage(int damage_value) //Deals damage to objects
+    public void ApplyDamage(int damage_value) //Deals damage to object
     {
         health -= damage_value;
         if (health <= 0)
@@ -79,6 +79,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
             this.gameObject.SetActive(false);
         }
     }
+    public void HealDamage(int heal_value) { } //Adds health to object
 
     /// <summary>
     /// Visual debug

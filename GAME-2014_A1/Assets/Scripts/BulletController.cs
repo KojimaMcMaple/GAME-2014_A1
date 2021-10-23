@@ -60,11 +60,19 @@ public class BulletController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
+    /// <param name="value"></param>
     public void SetSpawnPos(Vector3 value)
     {
         spawn_pos_ = value;
     }
 
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
+    /// <param name="value"></param>
     public void SetDir(GlobalEnums.BulletDir value)
     {
         dir_ = value;
@@ -81,7 +89,6 @@ public class BulletController : MonoBehaviour
             if (other_interface.obj_type != type_)
             {
                 other_interface.ApplyDamage(damage_);
-                Debug.Log(">>> " + damage_);
             }
         }
         bullet_manager_.ReturnBullet(this.gameObject, type_);

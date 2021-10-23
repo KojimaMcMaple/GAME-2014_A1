@@ -53,7 +53,6 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         game_manager_.SetUIHPBarValue(health / hp_);
     }
 
-    // Update is called once per frame
     void Update()
     {
         bool is_grounded = IsGrounded();
@@ -170,7 +169,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
     }
 
     /// <summary>
-    /// Mutators
+    /// Mutator for private variable
     /// </summary>
     public void SetCanShoot()
     {
@@ -187,11 +186,25 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
     }
     public int health { get; set; } //Health points
     public GlobalEnums.ObjType obj_type { get; set; } //Type of gameobject
-    public void ApplyDamage(int damage_value) //Deals damage to objects
+    public void ApplyDamage(int damage_value) //Deals damage to object
     {
         health -= damage_value;
-        game_manager_.SetUIHPBarValue((float)health / (float)hp_);
+        health = health < 0 ? 0 : health; //Clamps health so it doesn't go below 0
+        game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
     }
+    public void HealDamage(int heal_value) //Adds health to object
+    {
+        if (health == hp_) //If full HP, IncrementScore
+        {
+            game_manager_.IncrementScore(heal_value);
+        }
+        else
+        {
+            health += heal_value;
+            health = health > hp_ ? hp_ : health; //Clamps health so it doesn't exceed hp_
+            game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
+        }
+    } 
 
     /// <summary>
     /// Visual debug

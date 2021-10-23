@@ -6,7 +6,7 @@ using UnityEngine;
 ///  The Source file name: BulletManager.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Manages the queue
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>
@@ -44,6 +44,9 @@ public class BulletManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Uses the factory to spawn one object, add it to the queue, and increase the pool size 
+    /// </summary>
     private void AddBullet(GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER)
     {
         //var temp = Instantiate(bullet_obj, this.transform);

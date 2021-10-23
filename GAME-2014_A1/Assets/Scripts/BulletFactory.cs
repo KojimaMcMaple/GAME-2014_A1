@@ -6,7 +6,7 @@ using UnityEngine;
 ///  The Source file name: BulletFactory.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Manages the type of object to spawn
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>
@@ -17,6 +17,10 @@ public class BulletFactory : MonoBehaviour
     public GameObject enemy_bullet;
     public GameObject player_bullet;
 
+    /// <summary>
+    /// Instantiates an object and returns a reference to it
+    /// </summary>
+    /// <returns></returns>
     public GameObject CreateBullet(GlobalEnums.ObjType type = GlobalEnums.ObjType.PLAYER)
     {
         GameObject temp = null;
