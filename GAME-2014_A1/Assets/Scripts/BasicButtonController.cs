@@ -20,25 +20,25 @@ public class BasicButtonController : MonoBehaviour
 
     public void DoLoadNextScene()
     {
-        StartCoroutine("Enlarge");
+        StartCoroutine(Enlarge());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void DoLoadPrevScene()
     {
-        StartCoroutine("Shrink");
+        StartCoroutine(Shrink());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void DoQuitApp()
     {
-        StartCoroutine("Shrink");
+        StartCoroutine(Shrink());
         Application.Quit();
     }
 
     IEnumerator Shrink()
     {
-        for (float ft = 1f; ft <= 0.01f; ft -= 0.01f)
+        for (float ft = 1f; ft <= 0.1f; ft -= 0.05f)
         {
             gameObject.transform.localScale = new Vector3(ft, ft, ft);
             yield return new WaitForSeconds(2.0f);

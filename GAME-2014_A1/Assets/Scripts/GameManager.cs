@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 ///  The Source file name: GameManager.cs
@@ -13,6 +14,9 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private string next_level_;
+    [SerializeField] private string prev_level_;
+    [SerializeField] private GameObject tut_panel_;
     [SerializeField] private Slider ui_hp_bar_;
     [SerializeField] private Text ui_score_;
     private int score_ = 0;
@@ -27,14 +31,14 @@ public class GameManager : MonoBehaviour
         SetUIScoreValue(score_);
     }
 
-    void Update()
-    {
+    //void Update()
+    //{
         
-        //// LAB1
-        //screen_ = new Rect(0f, 0f, Screen.width, Screen.height);
-        //safe_area_ = Screen.safeArea;
-        //CheckOrientation();
-    }
+    //    //// LAB1
+    //    //screen_ = new Rect(0f, 0f, Screen.width, Screen.height);
+    //    //safe_area_ = Screen.safeArea;
+    //    //CheckOrientation();
+    //}
 
     public void SetUIHPBarValue(float value)
     {
@@ -49,7 +53,39 @@ public class GameManager : MonoBehaviour
 
     public void SetUIScoreValue(int value)
     {
-        ui_score_.text = ("Score " + value).ToString();
+        if (ui_score_ != null)
+        {
+            ui_score_.text = ("Score " + value).ToString();
+        }
+        else
+        {
+            Debug.Log(">>> NO ui_score_!");
+        }
+    }
+
+    public void DoLoadNextLevel()
+    {
+        SceneManager.LoadScene(next_level_);
+    }
+
+    public void DoLoadPrevLevel()
+    {
+        SceneManager.LoadScene(prev_level_);
+    }
+
+    public void DoQuitApp()
+    {
+        Application.Quit();
+    }
+
+    public void DoShowTut()
+    {
+        tut_panel_.SetActive(true);
+    }
+
+    public void DoHideTut()
+    {
+        tut_panel_.SetActive(false);
     }
 
     /// <summary>
