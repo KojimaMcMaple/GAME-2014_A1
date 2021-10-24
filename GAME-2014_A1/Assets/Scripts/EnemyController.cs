@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     [SerializeField] private int score_ = 50;
 
     [Header("Movement")]
-    private Vector3 startingPoint;
+    private Vector3 start_pos_;
     [SerializeField] private float vertical_range_ = 0.47f;
     
     [Header("Bullets")]
@@ -29,6 +29,8 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
 
     private Transform fov_;
     private bool is_facing_left_ = true;
+    private GlobalEnums.EnemyState state_ = GlobalEnums.EnemyState.IDLE;
+    private Animator animator_;
 
     private BulletManager bullet_manager_;
     private FoodManager food_manager_;
@@ -36,47 +38,64 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
 
     void Awake()
     {
-        startingPoint = transform.position;
-        is_facing_left_ = transform.localScale.x < 0 ? true : false;
-        bullet_spawn_pos_ = transform.Find("BulletSpawnPosition");
-        bullet_manager_ = GameObject.FindObjectOfType<BulletManager>();
-        food_manager_ = GameObject.FindObjectOfType<FoodManager>();
+        start_pos_ = transform.position;
+        is_facing_left_ = transform.localScale.x > 0 ? false : true;
         shoot_countdown_ = firerate_;
-
-        game_manager_ = FindObjectOfType<GameManager>();
+        animator_ = GetComponent<Animator>();
+        fov_ = transform.Find("FieldOfVision");
+        bullet_spawn_pos_ = transform.Find("BulletSpawnPosition");
+        bullet_manager_ =   GameObject.FindObjectOfType<BulletManager>();
+        food_manager_ =     GameObject.FindObjectOfType<FoodManager>();
+        game_manager_ =     GameObject.FindObjectOfType<GameManager>();
 
         Init(); //IDamageable method
     }
 
     void Update()
     {
-        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + startingPoint.y);
+        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + start_pos_.y);
+        float scale_x = is_facing_left_ ? -1.0f : 1.0f;
+        transform.localScale = new Vector3(scale_x, transform.localScale.y, transform.localScale.z);
 
+        switch (state_)
+        {
+            case GlobalEnums.EnemyState.IDLE:
+                animator_.SetBool("IsAttacking", false);
+                break;
+            case GlobalEnums.EnemyState.ATTACK:
+                animator_.SetBool("IsAttacking", true);
+                DoShoot();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void DoShoot()
+    {
         shoot_countdown_ -= Time.deltaTime;
         if (shoot_countdown_ <= 0)
         {
-            if (transform.localScale.x > 0)
-            {
-                bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.ENEMY, GlobalEnums.BulletDir.RIGHT);
-            }
-            else
-            {
-                bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.ENEMY, GlobalEnums.BulletDir.LEFT);
-            }
+            GlobalEnums.BulletDir dir = is_facing_left_ ? GlobalEnums.BulletDir.LEFT : GlobalEnums.BulletDir.RIGHT;
+            bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.ENEMY, dir);
             shoot_countdown_ = firerate_;
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
+    public void SetState(GlobalEnums.EnemyState value)
     {
-        IDamageable<int> other_interface = collision.gameObject.GetComponent<IDamageable<int>>();
-        if (other_interface != null)
-        {
-            if (other_interface.obj_type == GlobalEnums.ObjType.PLAYER)
-            {
+        state_ = value;
+    }
 
-            }
-        }
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
+    public void SetIsFacingLeft(bool value)
+    {
+        is_facing_left_ = value;
     }
 
     /// <summary>

@@ -83,6 +83,10 @@ public class BulletController : MonoBehaviour
     /// </summary>
     public void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.tag == "FieldOfVision")
+        {
+            return;
+        }
         IDamageable<int> other_interface = other.gameObject.GetComponent<IDamageable<int>>();
         if (other_interface != null)
         {

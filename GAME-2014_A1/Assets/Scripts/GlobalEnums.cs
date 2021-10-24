@@ -33,4 +33,10 @@ public static class GlobalEnums
         BEYOND,
         TYPE_COUNT
     };
+
+    public enum EnemyState
+    {
+        IDLE,
+        ATTACK
+    };
 }
