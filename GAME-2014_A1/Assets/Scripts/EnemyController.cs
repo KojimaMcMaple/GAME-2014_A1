@@ -36,6 +36,10 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     private FoodManager food_manager_;
     private GameManager game_manager_;
 
+    [SerializeField] private AudioClip shoot_sfx_;
+    [SerializeField] private AudioClip damaged_sfx_;
+    private AudioSource audio_source_;
+
     void Awake()
     {
         start_pos_ = transform.position;
@@ -47,6 +51,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         bullet_manager_ =   GameObject.FindObjectOfType<BulletManager>();
         food_manager_ =     GameObject.FindObjectOfType<FoodManager>();
         game_manager_ =     GameObject.FindObjectOfType<GameManager>();
+        audio_source_ = GetComponent<AudioSource>();
 
         Init(); //IDamageable method
     }
@@ -79,6 +84,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
             GlobalEnums.BulletDir dir = is_facing_left_ ? GlobalEnums.BulletDir.LEFT : GlobalEnums.BulletDir.RIGHT;
             bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.ENEMY, dir);
             shoot_countdown_ = firerate_;
+            audio_source_.PlayOneShot(shoot_sfx_);
         }
     }
 
@@ -111,6 +117,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     public void ApplyDamage(int damage_value) //Deals damage to object
     {
         health -= damage_value;
+        audio_source_.PlayOneShot(damaged_sfx_);
         if (health <= 0)
         {
             food_manager_.GetObj(this.transform.position, (GlobalEnums.FoodType)Random.Range(0, (int)GlobalEnums.FoodType.TYPE_COUNT));

@@ -22,7 +22,7 @@ public class FoodController : MonoBehaviour
     private void Awake()
     {
         spawn_pos_ = transform.position;
-        manager_ = GameObject.FindObjectOfType<FoodManager>();
+        manager_ = FindObjectOfType<FoodManager>();
     }
 
     private void Update()

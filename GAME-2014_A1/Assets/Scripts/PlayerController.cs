@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
 
     private PlayerInputControls input_;
 
+    [SerializeField] private AudioClip shoot_sfx_;
+    [SerializeField] private AudioClip damaged_sfx_;
+    private AudioSource audio_source_;
+
     void Awake()
     {
         input_ = new PlayerInputControls();
@@ -45,9 +49,10 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         player_collider_ = GetComponent<CapsuleCollider2D>();
 
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition"); 
-        bullet_manager_ = GameObject.FindObjectOfType<BulletManager>();
+        bullet_manager_ = FindObjectOfType<BulletManager>();
 
         game_manager_ = FindObjectOfType<GameManager>();
+        audio_source_ = GetComponent<AudioSource>();
 
         Init(); //IDamageable method
         game_manager_.SetUIHPBarValue(health / hp_);
@@ -166,6 +171,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.PLAYER, GlobalEnums.BulletDir.LEFT);
         }
         can_shoot_ = false;
+        audio_source_.PlayOneShot(shoot_sfx_);
     }
 
     /// <summary>
@@ -191,6 +197,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         health -= damage_value;
         health = health < 0 ? 0 : health; //Clamps health so it doesn't go below 0
         game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
+        audio_source_.PlayOneShot(damaged_sfx_);
     }
     public void HealDamage(int heal_value) //Adds health to object
     {

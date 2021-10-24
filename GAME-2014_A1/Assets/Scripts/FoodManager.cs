@@ -24,6 +24,13 @@ public class FoodManager : MonoBehaviour
 
     private FoodFactory factory_;
 
+    [SerializeField] private AudioClip eat_sfx_;
+    [SerializeField] private float low_pitch_ = .75f;
+    [SerializeField] private float default_pitch_ = 1.0f;
+    [SerializeField] private float high_pitch_ = 1.5f;
+    [SerializeField] private float beyond_pitch_ = 2.0f;
+    private AudioSource audio_source_;
+
     private void Awake()
     {
         pool_ = new Queue<GameObject>();
@@ -31,6 +38,7 @@ public class FoodManager : MonoBehaviour
         high_pool_ = new Queue<GameObject>();
         beyond_pool_ = new Queue<GameObject>();
         factory_ = GetComponent<FoodFactory>();
+        audio_source_ = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -123,15 +131,23 @@ public class FoodManager : MonoBehaviour
         {
             case GlobalEnums.FoodType.DEFAULT:
                 pool_.Enqueue(returned_obj);
+                audio_source_.pitch = default_pitch_;
+                audio_source_.PlayOneShot(eat_sfx_);
                 break;
             case GlobalEnums.FoodType.LOW:
                 low_pool_.Enqueue(returned_obj);
+                audio_source_.pitch = low_pitch_;
+                audio_source_.PlayOneShot(eat_sfx_);
                 break;
             case GlobalEnums.FoodType.HIGH:
                 high_pool_.Enqueue(returned_obj);
+                audio_source_.pitch = high_pitch_;
+                audio_source_.PlayOneShot(eat_sfx_);
                 break;
             case GlobalEnums.FoodType.BEYOND:
                 beyond_pool_.Enqueue(returned_obj);
+                audio_source_.pitch = beyond_pitch_;
+                audio_source_.PlayOneShot(eat_sfx_);
                 break;
             default:
                 break;
