@@ -33,6 +33,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     private Animator animator_;
 
     private BulletManager bullet_manager_;
+    private ExplosionManager explode_manager_;
     private FoodManager food_manager_;
     private GameManager game_manager_;
 
@@ -49,6 +50,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         fov_ = transform.Find("FieldOfVision");
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition");
         bullet_manager_ =   GameObject.FindObjectOfType<BulletManager>();
+        explode_manager_ =   GameObject.FindObjectOfType<ExplosionManager>();
         food_manager_ =     GameObject.FindObjectOfType<FoodManager>();
         game_manager_ =     GameObject.FindObjectOfType<GameManager>();
         audio_source_ = GetComponent<AudioSource>();
@@ -120,6 +122,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         audio_source_.PlayOneShot(damaged_sfx_);
         if (health <= 0)
         {
+            explode_manager_.GetObj(this.transform.position, obj_type);
             food_manager_.GetObj(this.transform.position, (GlobalEnums.FoodType)Random.Range(0, (int)GlobalEnums.FoodType.TYPE_COUNT));
             game_manager_.IncrementScore(score_);
             this.gameObject.SetActive(false);

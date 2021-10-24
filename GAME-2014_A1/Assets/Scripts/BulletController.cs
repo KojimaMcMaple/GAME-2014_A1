@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class BulletController : MonoBehaviour
 {
-    [SerializeField] private GlobalEnums.ObjType type_ = GlobalEnums.ObjType.ENEMY;
+    [SerializeField] private GlobalEnums.ObjType type_ = GlobalEnums.ObjType.ENEMY; //compares with hit obj, determines which pool to return to
     [SerializeField] private float speed_;
     [SerializeField] private float travel_distance_ = 10f;
     [SerializeField] private int damage_ = 10;

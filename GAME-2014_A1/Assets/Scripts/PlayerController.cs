@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
     private bool can_shoot_ = true;
     private Transform bullet_spawn_pos_;
     private BulletManager bullet_manager_;
+    private ExplosionManager explode_manager_;
     
     private GameManager game_manager_;
 
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
 
     [SerializeField] private AudioClip shoot_sfx_;
     [SerializeField] private AudioClip damaged_sfx_;
+    [SerializeField] private AudioClip food_score_sfx_;
     private AudioSource audio_source_;
 
     void Awake()
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
 
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition"); 
         bullet_manager_ = FindObjectOfType<BulletManager>();
-
+        explode_manager_ = FindObjectOfType<ExplosionManager>();
         game_manager_ = FindObjectOfType<GameManager>();
         audio_source_ = GetComponent<AudioSource>();
 
@@ -74,7 +76,6 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             scale_x_ = -1;
         }
         
-       
         if (input_.PlayerMain.Jump.triggered && is_grounded)
         {
             rb_.velocity = new Vector2(rb_.velocity.x, jump_force_);
@@ -171,7 +172,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             bullet_manager_.GetBullet(bullet_spawn_pos_.position, GlobalEnums.ObjType.PLAYER, GlobalEnums.BulletDir.LEFT);
         }
         can_shoot_ = false;
-        audio_source_.PlayOneShot(shoot_sfx_);
+        audio_source_.PlayOneShot(shoot_sfx_, 0.7f);
     }
 
     /// <summary>
@@ -198,12 +199,17 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         health = health < 0 ? 0 : health; //Clamps health so it doesn't go below 0
         game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
         audio_source_.PlayOneShot(damaged_sfx_);
+        if (health == 0)
+        {
+            explode_manager_.GetObj(this.transform.position, obj_type);
+        }
     }
     public void HealDamage(int heal_value) //Adds health to object
     {
         if (health == hp_) //If full HP, IncrementScore
         {
             game_manager_.IncrementScore(heal_value);
+            audio_source_.PlayOneShot(food_score_sfx_);
         }
         else
         {
