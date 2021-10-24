@@ -79,6 +79,7 @@ public class ExplosionManager : MonoBehaviour
         }
         temp.transform.position = position;
         temp.SetActive(true);
+        temp.GetComponent<ExplosionController>().DoExplode();
         return temp;
     }
 

@@ -37,6 +37,8 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     private FoodManager food_manager_;
     private GameManager game_manager_;
 
+    private VfxSpriteFlash flash_vfx_;
+
     [SerializeField] private AudioClip shoot_sfx_;
     [SerializeField] private AudioClip damaged_sfx_;
     private AudioSource audio_source_;
@@ -53,6 +55,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         explode_manager_ =   GameObject.FindObjectOfType<ExplosionManager>();
         food_manager_ =     GameObject.FindObjectOfType<FoodManager>();
         game_manager_ =     GameObject.FindObjectOfType<GameManager>();
+        flash_vfx_ = GetComponent<VfxSpriteFlash>();
         audio_source_ = GetComponent<AudioSource>();
 
         Init(); //IDamageable method
@@ -119,6 +122,7 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
     public void ApplyDamage(int damage_value) //Deals damage to object
     {
         health -= damage_value;
+        flash_vfx_.DoFlash();
         audio_source_.PlayOneShot(damaged_sfx_);
         if (health <= 0)
         {

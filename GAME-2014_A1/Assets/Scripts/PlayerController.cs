@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
     
     private GameManager game_manager_;
 
+    private VfxSpriteFlash flash_vfx_;
+
     private PlayerInputControls input_;
 
     [SerializeField] private AudioClip shoot_sfx_;
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         bullet_manager_ = FindObjectOfType<BulletManager>();
         explode_manager_ = FindObjectOfType<ExplosionManager>();
         game_manager_ = FindObjectOfType<GameManager>();
+        flash_vfx_ = GetComponent<VfxSpriteFlash>();
         audio_source_ = GetComponent<AudioSource>();
 
         Init(); //IDamageable method
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
                 //animator_.SetTrigger("ShootTriggered"); //doesn't work due to Idle flicker
                 shoot_anim_countdown_ = shoot_anim_delay_;
                 DoFireBullet();
-                StartCoroutine("ShootDelay");
+                StartCoroutine(ShootDelay());
             }
         }
         if (shoot_anim_countdown_ > 0)
@@ -198,6 +201,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         health -= damage_value;
         health = health < 0 ? 0 : health; //Clamps health so it doesn't go below 0
         game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
+        flash_vfx_.DoFlash();
         audio_source_.PlayOneShot(damaged_sfx_);
         if (health == 0)
         {

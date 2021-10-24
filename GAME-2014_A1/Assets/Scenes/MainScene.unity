@@ -190,7 +190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7587296900539247476, guid: 83268204aed48b74d90fc0fdc8b0b5d0, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7587296900539247476, guid: 83268204aed48b74d90fc0fdc8b0b5d0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10387,7 +10387,7 @@ Transform:
   m_LocalScale: {x: 0.5976531, y: 0.5976531, z: 0.5976531}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &676280822
 GameObject:
@@ -23890,6 +23890,7 @@ GameObject:
   - component: {fileID: 1582135042}
   - component: {fileID: 1582135041}
   - component: {fileID: 1582135040}
+  - component: {fileID: 1582135047}
   - component: {fileID: 1582135046}
   m_Layer: 0
   m_Name: Player
@@ -24140,6 +24141,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1582135047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582135039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08a70928d23d9248b6b9825d852a3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flash_mat_: {fileID: 2100000, guid: 58a99a018f5bc634ea614a2c0509cb91, type: 2}
+  flash_time_: 0.2
 --- !u!1 &1615483516
 GameObject:
   m_ObjectHideFlags: 0
@@ -24199,9 +24214,10 @@ GameObject:
   - component: {fileID: 1652634313}
   - component: {fileID: 1652634312}
   - component: {fileID: 1652634311}
-  - component: {fileID: 1652634314}
   - component: {fileID: 1652634315}
   - component: {fileID: 1652634316}
+  - component: {fileID: 1652634314}
+  - component: {fileID: 1652634318}
   - component: {fileID: 1652634317}
   m_Layer: 6
   m_Name: Enemy_Robot
@@ -24296,7 +24312,7 @@ Transform:
   - {fileID: 1042283268}
   - {fileID: 1939196219}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1652634314
 MonoBehaviour:
@@ -24460,6 +24476,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1652634318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652634310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08a70928d23d9248b6b9825d852a3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flash_mat_: {fileID: 2100000, guid: 58a99a018f5bc634ea614a2c0509cb91, type: 2}
+  flash_time_: 0.2
 --- !u!1 &1680735112
 GameObject:
   m_ObjectHideFlags: 0
@@ -26593,7 +26623,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 51014ce213855a3438f2c2ba0860c224, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -27011,7 +27041,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

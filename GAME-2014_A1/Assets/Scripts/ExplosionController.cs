@@ -23,13 +23,12 @@ public class ExplosionController : MonoBehaviour
     {
         manager_ = FindObjectOfType<ExplosionManager>();
         audio_source_ = GetComponent<AudioSource>();
-        gameObject.SetActive(false);
     }
 
-    private void OnEnable()
+    public void DoExplode()
     {
         audio_source_.PlayOneShot(explode_sfx_);
-        StartCoroutine("Fade");
+        StartCoroutine(Fade());
     }
 
     IEnumerator Fade()
