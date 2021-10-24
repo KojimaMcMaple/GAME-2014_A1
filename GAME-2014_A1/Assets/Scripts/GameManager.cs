@@ -16,10 +16,13 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private string next_level_;
     [SerializeField] private string prev_level_;
-    [SerializeField] private GameObject tut_panel_;
+    [SerializeField] private GameObject overlay_panel_;
     [SerializeField] private Slider ui_hp_bar_;
     [SerializeField] private Text ui_score_;
     private int score_ = 0;
+
+    [SerializeField] private AudioClip click_sfx_;
+    private AudioSource audio_source_;
 
     // LAB1
     private Rect screen_;
@@ -28,7 +31,16 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        SetUIScoreValue(score_);
+        audio_source_ = GetComponent<AudioSource>();
+
+        if (ui_score_ != null)
+        {
+            SetUIScoreValue(score_);
+        }
+        else
+        {
+            Debug.Log(">>> NO ui_score_!");
+        }
     }
 
     //void Update()
@@ -53,39 +65,45 @@ public class GameManager : MonoBehaviour
 
     public void SetUIScoreValue(int value)
     {
-        if (ui_score_ != null)
-        {
-            ui_score_.text = ("Score " + value).ToString();
-        }
-        else
-        {
-            Debug.Log(">>> NO ui_score_!");
-        }
+        ui_score_.text = ("Score " + value).ToString();
     }
 
     public void DoLoadNextLevel()
     {
+        audio_source_.PlayOneShot(click_sfx_);
+        StartCoroutine(Delay());
         SceneManager.LoadScene(next_level_);
     }
 
     public void DoLoadPrevLevel()
     {
+        audio_source_.PlayOneShot(click_sfx_);
+        StartCoroutine(Delay());
         SceneManager.LoadScene(prev_level_);
     }
 
     public void DoQuitApp()
     {
+        audio_source_.PlayOneShot(click_sfx_);
+        StartCoroutine(Delay());
         Application.Quit();
     }
 
-    public void DoShowTut()
+    public void DoShowOverlayPanel()
     {
-        tut_panel_.SetActive(true);
+        audio_source_.PlayOneShot(click_sfx_);
+        overlay_panel_.SetActive(true);
     }
 
-    public void DoHideTut()
+    public void DoHideOverlayPanel()
     {
-        tut_panel_.SetActive(false);
+        audio_source_.PlayOneShot(click_sfx_);
+        overlay_panel_.SetActive(false);
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(2.0f);
     }
 
     /// <summary>

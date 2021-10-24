@@ -20,11 +20,15 @@ public class ExplosionManager : MonoBehaviour
 
     private ExplosionFactory factory_;
 
+    private GameManager game_manager_;
+
     private void Awake()
     {
         player_pool_ = new Queue<GameObject>();
         enemy_pool_ = new Queue<GameObject>();
         factory_ = GetComponent<ExplosionFactory>();
+
+        game_manager_ = FindObjectOfType<GameManager>(); //show game over after player explosion is returned
     }
 
     /// <summary>
@@ -95,6 +99,7 @@ public class ExplosionManager : MonoBehaviour
         {
             case GlobalEnums.ObjType.PLAYER:
                 player_pool_.Enqueue(returned_obj);
+                game_manager_.DoShowOverlayPanel();
                 break;
             case GlobalEnums.ObjType.ENEMY:
                 enemy_pool_.Enqueue(returned_obj);

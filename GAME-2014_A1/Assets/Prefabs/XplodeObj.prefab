@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type_: 2
-  fade_time_: 5
+  fade_time_: 3
   explode_sfx_: {fileID: 8300000, guid: e2048959f1e55ff439585cca3f13ae83, type: 3}
 --- !u!82 &7392038373681227218
 AudioSource:

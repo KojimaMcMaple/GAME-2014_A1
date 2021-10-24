@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
     //private Vector2 move_dir_;
     private float scale_x_ = 1f;
     private Animator animator_;
+    private SpriteRenderer renderer_;
+    private bool is_dead_ = false;
 
     [SerializeField] private float shoot_delay_ = 0.21f;
     [SerializeField] private float shoot_anim_delay_ = 0.7f;
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
 
         rb_ = GetComponent<Rigidbody2D>();
         animator_ = GetComponent<Animator>();
+        renderer_ = GetComponent<SpriteRenderer>();
         player_collider_ = GetComponent<CapsuleCollider2D>();
 
         bullet_spawn_pos_ = transform.Find("BulletSpawnPosition"); 
@@ -65,6 +68,11 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
 
     void Update()
     {
+        if (is_dead_) //DO NOT CONTROL ANYTHING IF DEAD
+        {
+            return;
+        }
+        
         bool is_grounded = IsGrounded();
 
         // CONTROLS
@@ -152,11 +160,24 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         input_.Disable();
     }
 
+    /// <summary>
+    /// Don't allow player to spam bullets
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ShootDelay()
     {
         yield return new WaitForSeconds(shoot_delay_);
         can_shoot_ = true;
         animator_.SetBool("IsShooting", false);
+    }
+
+    /// <summary>
+    /// General delay function for level loading, show explosion before game over, etc.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Delay(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 
     private bool IsGrounded()
@@ -205,7 +226,9 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         audio_source_.PlayOneShot(damaged_sfx_);
         if (health == 0)
         {
+            is_dead_ = true;
             explode_manager_.GetObj(this.transform.position, obj_type);
+            gameObject.SetActive(false);
         }
     }
     public void HealDamage(int heal_value) //Adds health to object
@@ -221,7 +244,9 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             health = health > hp_ ? hp_ : health; //Clamps health so it doesn't exceed hp_
             game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
         }
-    } 
+    }
+
+    
 
     /// <summary>
     /// Visual debug
