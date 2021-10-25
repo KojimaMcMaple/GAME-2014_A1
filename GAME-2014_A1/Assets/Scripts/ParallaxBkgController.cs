@@ -2,6 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  The Source file name: PlayerController.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Global game manager script
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
+
 public class ParallaxBkgController : MonoBehaviour
 {
     //https://youtu.be/wBol2xzxCOU
@@ -14,7 +23,6 @@ public class ParallaxBkgController : MonoBehaviour
     private float texture_unit_size_x_ = 1f;
     private float texture_unit_size_y_ = 1f;
     
-    // Start is called before the first frame update
     void Start()
     {
         camera_transform_ = Camera.main.transform;

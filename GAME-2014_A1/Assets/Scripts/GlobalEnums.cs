@@ -22,6 +22,7 @@ public static class GlobalEnums
         DEFAULT,
         PLAYER,
         ENEMY,
+        BOSS,
         TYPE_COUNT
     };
 
