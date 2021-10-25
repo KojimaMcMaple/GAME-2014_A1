@@ -51,7 +51,7 @@ public class FoodFactory : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Sets a random sprite for food item
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>

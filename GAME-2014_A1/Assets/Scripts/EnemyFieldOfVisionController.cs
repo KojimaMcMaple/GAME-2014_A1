@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  The Source file name: EnemyController.cs
+///  Author's name: Trung Le (Kyle Hunter)
+///  Student Number: 101264698
+///  Program description: Defines behavior for the enemy's field of vision
+///  Date last Modified: See GitHub
+///  Revision History: See GitHub
+/// </summary>
 public class EnemyFieldOfVisionController : MonoBehaviour
 {
     private EnemyController parent_controller_;
@@ -11,6 +19,10 @@ public class EnemyFieldOfVisionController : MonoBehaviour
         parent_controller_ = transform.parent.transform.GetComponent<EnemyController>();
     }
 
+    /// <summary>
+    /// Enters ATTACK state if player triggers collider
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         IDamageable<int> other_interface = other.gameObject.GetComponent<IDamageable<int>>();
@@ -23,6 +35,10 @@ public class EnemyFieldOfVisionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Enters IDLE state if player leaves collider
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit2D(Collider2D other)
     {
         IDamageable<int> other_interface = other.gameObject.GetComponent<IDamageable<int>>();
@@ -35,6 +51,10 @@ public class EnemyFieldOfVisionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds orientation when player stays in collider
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerStay2D(Collider2D other)
     {
         IDamageable<int> other_interface = other.gameObject.GetComponent<IDamageable<int>>();

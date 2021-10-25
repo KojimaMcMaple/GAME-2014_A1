@@ -6,7 +6,7 @@ using UnityEngine;
 ///  The Source file name: PlayerController.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Defines behavior for the player character
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>
@@ -87,22 +87,22 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             scale_x_ = -1;
         }
         
-        if (input_.PlayerMain.Jump.triggered && is_grounded)
+        if (input_.PlayerMain.Jump.triggered && is_grounded) //jump pressed
         {
             rb_.velocity = new Vector2(rb_.velocity.x, jump_force_);
         }
-        if (input_.PlayerMain.Shoot.triggered)
+        if (input_.PlayerMain.Shoot.triggered) //shoot pressed
         {
             if (can_shoot_)
             {
                 //animator_.SetBool("IsShooting", true); //doesn't work due to Idle flicker
                 //animator_.SetTrigger("ShootTriggered"); //doesn't work due to Idle flicker
-                shoot_anim_countdown_ = shoot_anim_delay_;
+                shoot_anim_countdown_ = shoot_anim_delay_; //revolutionary problem solving so shoot anim state can be kept if player spams shoot button
                 DoFireBullet();
                 StartCoroutine(ShootDelay());
             }
         }
-        if (shoot_anim_countdown_ > 0)
+        if (shoot_anim_countdown_ > 0) //returns to idle if shoot is not pressed
         {
             shoot_anim_countdown_ -= Time.deltaTime;
         }
@@ -180,11 +180,18 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
         yield return new WaitForSeconds(time);
     }
 
+    /// <summary>
+    /// Checks if player is on the ground
+    /// </summary>
+    /// <returns></returns>
     private bool IsGrounded()
     {
         return Physics2D.Raycast(new Vector2(player_collider_.transform.position.x, player_collider_.bounds.min.y), Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
     }
 
+    /// <summary>
+    /// Shoots a bullet, pooled from queue
+    /// </summary>
     public void DoFireBullet()
     {
         if (transform.localScale.x > 0)
@@ -245,8 +252,6 @@ public class PlayerController : MonoBehaviour, IDamageable<int>
             game_manager_.SetUIHPBarValue((float)health / (float)hp_); //Updates UI
         }
     }
-
-    
 
     /// <summary>
     /// Visual debug

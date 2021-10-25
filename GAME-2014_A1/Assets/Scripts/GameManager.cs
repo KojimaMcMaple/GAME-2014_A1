@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 ///  The Source file name: GameManager.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Global game manager script, manages the UI and level loading
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>
@@ -45,29 +45,41 @@ public class GameManager : MonoBehaviour
 
     //void Update()
     //{
-        
+
     //    //// LAB1
     //    //screen_ = new Rect(0f, 0f, Screen.width, Screen.height);
     //    //safe_area_ = Screen.safeArea;
     //    //CheckOrientation();
     //}
 
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
     public void SetUIHPBarValue(float value)
     {
         ui_hp_bar_.value = value;
     }
 
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
     public void IncrementScore(int value)
     {
         score_ += value;
         SetUIScoreValue(score_);
     }
 
+    /// <summary>
+    /// Mutator for private variable
+    /// </summary>
     public void SetUIScoreValue(int value)
     {
         ui_score_.text = ("Score " + value).ToString();
     }
 
+    /// <summary>
+    /// Loads next level
+    /// </summary>
     public void DoLoadNextLevel()
     {
         audio_source_.PlayOneShot(click_sfx_);
@@ -75,6 +87,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(next_level_);
     }
 
+    /// <summary>
+    /// Loads prev level
+    /// </summary>
     public void DoLoadPrevLevel()
     {
         audio_source_.PlayOneShot(click_sfx_);
@@ -82,6 +97,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(prev_level_);
     }
 
+    /// <summary>
+    /// Closes app
+    /// </summary>
     public void DoQuitApp()
     {
         audio_source_.PlayOneShot(click_sfx_);
@@ -89,18 +107,28 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// Shows hidden panel
+    /// </summary>
     public void DoShowOverlayPanel()
     {
         audio_source_.PlayOneShot(click_sfx_);
         overlay_panel_.SetActive(true);
     }
 
+    /// <summary>
+    /// Hides overlay panel
+    /// </summary>
     public void DoHideOverlayPanel()
     {
         audio_source_.PlayOneShot(click_sfx_);
         overlay_panel_.SetActive(false);
     }
 
+    /// <summary>
+    /// General delay function for level loading, show explosion before game over, etc.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(2.0f);

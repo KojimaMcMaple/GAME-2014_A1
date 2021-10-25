@@ -6,7 +6,7 @@ using UnityEngine;
 ///  The Source file name: EnemyController.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Defines behavior for the enemy
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>
@@ -63,11 +63,11 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
 
     void Update()
     {
-        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + start_pos_.y);
+        transform.position = new Vector2(transform.position.x, Mathf.PingPong(Time.time * speed_, vertical_range_) + start_pos_.y); //bops up and down
         float scale_x = is_facing_left_ ? -1.0f : 1.0f;
-        transform.localScale = new Vector3(scale_x, transform.localScale.y, transform.localScale.z);
+        transform.localScale = new Vector3(scale_x, transform.localScale.y, transform.localScale.z); //sets which way the enemy faces
 
-        switch (state_)
+        switch (state_) //state machine
         {
             case GlobalEnums.EnemyState.IDLE:
                 animator_.SetBool("IsAttacking", false);
@@ -81,6 +81,9 @@ public class EnemyController : MonoBehaviour, IDamageable<int>
         }
     }
 
+    /// <summary>
+    /// Shoots a bullet, pooled from queue
+    /// </summary>
     private void DoShoot()
     {
         shoot_countdown_ -= Time.deltaTime;

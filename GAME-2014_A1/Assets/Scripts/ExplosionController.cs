@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///  The Source file name: FoodController.cs
+///  The Source file name: ExplosionController.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
 ///  Program description: Responsible for the individual object spawn from the pool & factory
@@ -25,12 +25,19 @@ public class ExplosionController : MonoBehaviour
         audio_source_ = GetComponent<AudioSource>();
     }
 
+    /// <summary>
+    /// Spawns the explosion
+    /// </summary>
     public void DoExplode()
     {
         audio_source_.PlayOneShot(explode_sfx_);
         StartCoroutine(Fade());
     }
 
+    /// <summary>
+    /// Waits for the explosion to play before returning back to queue
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Fade()
     {
         yield return new WaitForSeconds(fade_time_);

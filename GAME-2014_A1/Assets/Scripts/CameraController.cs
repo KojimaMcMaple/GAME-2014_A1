@@ -6,7 +6,7 @@ using UnityEngine;
 ///  The Source file name: CameraController.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
-///  Program description: Global game manager script
+///  Program description: Snaps camera to the player, with an offset so player can see more in front of them
 ///  Date last Modified: See GitHub
 ///  Revision History: See GitHub
 /// </summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///  The Source file name: FoodManager.cs
+///  The Source file name: ExplosionManager.cs
 ///  Author's name: Trung Le (Kyle Hunter)
 ///  Student Number: 101264698
 ///  Program description: Manages the queue
